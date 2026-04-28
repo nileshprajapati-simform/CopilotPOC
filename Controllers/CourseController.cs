@@ -24,7 +24,7 @@ public class CourseController : ControllerBase
         return Ok(courses);
     }
     [HttpGet]
-    public async Task<IActionResult> GetAllCourses()
+    public async Task<IActionResult> GetAllCoursesees()
     {
         var courses = await _courseService.GetAllAsync();
         return Ok(courses);
