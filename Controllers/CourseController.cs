@@ -1,4 +1,5 @@
 using LMSWebAPI.Entities;
+using LMSWebAPI.Models;
 using LMSWebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ public class CourseController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var courses = await _courseService.GetAllAsync();
-        return Ok(courses);
+        return Ok(new ApiResponse<IEnumerable<Course>>("Courses retrieved successfully.", courses));
     }
 
     [HttpGet("{id}")]
@@ -30,16 +31,20 @@ public class CourseController : ControllerBase
         var course = await _courseService.GetByIdAsync(id);
         if (course == null)
         {
-            return NotFound();
+            return NotFound(new ApiResponse<Course>("Course not found.", null));
         }
-        return Ok(course);
+
+        return Ok(new ApiResponse<Course>("Course retrieved successfully.", course));
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(Course course)
     {
         await _courseService.AddAsync(course);
-        return CreatedAtAction(nameof(GetById), new { id = course.Id }, course);
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = course.Id },
+            new ApiResponse<Course>("Course created successfully.", course));
     }
 
     [HttpPut("{id}")]
@@ -47,16 +52,29 @@ public class CourseController : ControllerBase
     {
         if (id != course.Id)
         {
-            return BadRequest();
+            return BadRequest(new ApiResponse<Course>("Course ID in the URL must match the request body.", null));
         }
+
+        var existingCourse = await _courseService.GetByIdAsync(id);
+        if (existingCourse == null)
+        {
+            return NotFound(new ApiResponse<Course>("Course not found.", null));
+        }
+
         await _courseService.UpdateAsync(course);
-        return NoContent();
+        return Ok(new ApiResponse<Course>("Course updated successfully.", course));
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+        var existingCourse = await _courseService.GetByIdAsync(id);
+        if (existingCourse == null)
+        {
+            return NotFound(new ApiResponse<Course>("Course not found.", null));
+        }
+
         await _courseService.DeleteAsync(id);
-        return NoContent();
+        return Ok(new ApiResponse<Course>("Course deleted successfully.", null));
     }
 }
