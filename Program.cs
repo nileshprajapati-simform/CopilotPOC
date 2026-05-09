@@ -12,6 +12,7 @@ using LMSWebAPI.Entities;
 using LMSWebAPI.Repositories;
 using LMSWebAPI.Services;
 using LMSWebAPI.Middleware;
+using LMSWebAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,25 @@ builder.Services.AddSwaggerGen(options =>
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState.Values
+            .SelectMany(modelState => modelState.Errors)
+            .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage) ? "The request is invalid." : error.ErrorMessage)
+            .ToArray();
+
+        var response = new ApiResponse
+        {
+            StatusCode = StatusCodes.Status400BadRequest,
+            Message = "Validation failed.",
+            Errors = errors
+        };
+
+        return new BadRequestObjectResult(response);
+    };
+});
 
 // Add logging
 builder.Logging.ClearProviders();

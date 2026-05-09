@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using LMSWebAPI.Models;
 using System.Net;
 using System.Text.Json;
 
@@ -30,11 +31,11 @@ public class ExceptionHandlingMiddleware
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-        var response = new
+        var response = new ApiResponse
         {
             StatusCode = context.Response.StatusCode,
             Message = "An unexpected error occurred. Please try again later.",
-            Detailed = exception.Message
+            Errors = [exception.Message]
         };
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));
