@@ -17,7 +17,7 @@ public class CourseService : ICourseService
         return await _courseRepository.GetAllAsync();
     }
 
-    public async Task<Course> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(int id)
     {
         return await _courseRepository.GetByIdAsync(id);
     }
@@ -27,13 +27,13 @@ public class CourseService : ICourseService
         await _courseRepository.AddAsync(course);
     }
 
-    public async Task UpdateAsync(Course course)
+    public async Task<bool> UpdateAsync(Course course)
     {
-        await _courseRepository.UpdateAsync(course);
+        return await _courseRepository.UpdateAsync(course);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        await _courseRepository.DeleteAsync(id);
+        return await _courseRepository.DeleteAsync(id);
     }
 }

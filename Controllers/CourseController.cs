@@ -55,26 +55,24 @@ public class CourseController : ControllerBase
             return BadRequest(new ApiResponse<Course>("Course ID in the URL must match the request body.", null));
         }
 
-        var existingCourse = await _courseService.GetByIdAsync(id);
-        if (existingCourse == null)
+        var updated = await _courseService.UpdateAsync(course);
+        if (!updated)
         {
             return NotFound(new ApiResponse<Course>("Course not found.", null));
         }
 
-        await _courseService.UpdateAsync(course);
         return Ok(new ApiResponse<Course>("Course updated successfully.", course));
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var existingCourse = await _courseService.GetByIdAsync(id);
-        if (existingCourse == null)
+        var deleted = await _courseService.DeleteAsync(id);
+        if (!deleted)
         {
             return NotFound(new ApiResponse<Course>("Course not found.", null));
         }
 
-        await _courseService.DeleteAsync(id);
         return Ok(new ApiResponse<Course>("Course deleted successfully.", null));
     }
 }
