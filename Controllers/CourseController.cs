@@ -52,7 +52,7 @@ public class CourseController : ControllerBase
     {
         if (id != course.Id)
         {
-            return BadRequest(new ApiResponse<Course>("Course ID in the URL must match the course.Id value in the request body.", null));
+            return BadRequest(new ApiResponse<Course>("Course ID in the URL does not match the ID in the request body.", null));
         }
 
         var updatedCourse = await _courseService.UpdateAsync(course);
@@ -70,9 +70,9 @@ public class CourseController : ControllerBase
         var deleted = await _courseService.DeleteAsync(id);
         if (!deleted)
         {
-            return NotFound(new ApiResponse<Course>("Course not found.", null));
+            return NotFound(new ApiResponse<object>("Course not found.", null));
         }
 
-        return Ok(new ApiResponse<Course>("Course deleted successfully.", null));
+        return Ok(new ApiResponse<object>("Course deleted successfully.", null));
     }
 }
