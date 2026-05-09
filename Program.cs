@@ -15,6 +15,7 @@ using LMSWebAPI.Middleware;
 using LMSWebAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+const string fallbackValidationMessage = "A validation error occurred but no details were provided.";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,8 +52,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
     {
-        const string fallbackValidationMessage = "A validation error occurred but no details were provided.";
-
         var errors = context.ModelState.Values
             .SelectMany(modelState => modelState.Errors)
             .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage) ? fallbackValidationMessage : error.ErrorMessage)
