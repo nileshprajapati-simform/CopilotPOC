@@ -68,9 +68,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Replace the in-memory database configuration with MSSQL configuration
+// Configure PostgreSQL database context
 builder.Services.AddDbContext<LMSDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register services for dependency injection
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
