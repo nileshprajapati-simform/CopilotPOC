@@ -28,18 +28,17 @@ public class CourseRepository : ICourseRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateAsync(Course course)
+    public async Task<Course?> UpdateAsync(Course course)
     {
         var existingCourse = await _context.Courses.FindAsync(course.Id);
         if (existingCourse == null)
         {
-            return false;
+            return null;
         }
 
-        existingCourse.Name = course.Name;
-        existingCourse.Description = course.Description;
+        _context.Entry(existingCourse).CurrentValues.SetValues(course);
         await _context.SaveChangesAsync();
-        return true;
+        return existingCourse;
     }
 
     public async Task<bool> DeleteAsync(int id)

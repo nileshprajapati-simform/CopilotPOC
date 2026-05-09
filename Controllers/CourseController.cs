@@ -52,16 +52,16 @@ public class CourseController : ControllerBase
     {
         if (id != course.Id)
         {
-            return BadRequest(new ApiResponse<Course>("Course ID in the URL must match the request body.", null));
+            return BadRequest(new ApiResponse<Course>("Course ID in the URL must match the course.Id value in the request body.", null));
         }
 
-        var updated = await _courseService.UpdateAsync(course);
-        if (!updated)
+        var updatedCourse = await _courseService.UpdateAsync(course);
+        if (updatedCourse == null)
         {
             return NotFound(new ApiResponse<Course>("Course not found.", null));
         }
 
-        return Ok(new ApiResponse<Course>("Course updated successfully.", course));
+        return Ok(new ApiResponse<Course>("Course updated successfully.", updatedCourse));
     }
 
     [HttpDelete("{id}")]

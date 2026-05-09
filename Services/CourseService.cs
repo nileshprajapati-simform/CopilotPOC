@@ -27,7 +27,7 @@ public class CourseService : ICourseService
         await _courseRepository.AddAsync(course);
     }
 
-    public async Task<bool> UpdateAsync(Course course)
+    public async Task<Course?> UpdateAsync(Course course)
     {
         return await _courseRepository.UpdateAsync(course);
     }
