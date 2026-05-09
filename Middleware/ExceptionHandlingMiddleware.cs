@@ -8,10 +8,12 @@ namespace LMSWebAPI.Middleware;
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly IHostEnvironment _environment;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next)
+    public ExceptionHandlingMiddleware(RequestDelegate next, IHostEnvironment environment)
     {
         _next = next;
+        _environment = environment;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -22,11 +24,11 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, ex);
+            await HandleExceptionAsync(context, ex, _environment);
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception, IHostEnvironment environment)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -35,7 +37,7 @@ public class ExceptionHandlingMiddleware
         {
             StatusCode = context.Response.StatusCode,
             Message = "An unexpected error occurred. Please try again later.",
-            Errors = [exception.Message]
+            Errors = environment.IsDevelopment() ? [exception.Message] : []
         };
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));

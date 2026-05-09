@@ -51,9 +51,11 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
     {
+        const string fallbackValidationMessage = "A validation error occurred but no details were provided.";
+
         var errors = context.ModelState.Values
             .SelectMany(modelState => modelState.Errors)
-            .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage) ? "A validation error occurred but no details were provided." : error.ErrorMessage)
+            .Select(error => string.IsNullOrWhiteSpace(error.ErrorMessage) ? fallbackValidationMessage : error.ErrorMessage)
             .ToArray();
 
         var response = new ApiResponse
