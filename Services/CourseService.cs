@@ -5,6 +5,8 @@ namespace LMSWebAPI.Services;
 
 public class CourseService : ICourseService
 {
+    private const string TitleSuffix = "...";
+
     private readonly ICourseRepository _courseRepository;
 
     public CourseService(ICourseRepository courseRepository)
@@ -14,12 +16,15 @@ public class CourseService : ICourseService
 
     public async Task<IEnumerable<Course>> GetAllAsync()
     {
-        return await _courseRepository.GetAllAsync();
+        var courses = await _courseRepository.GetAllAsync();
+        return courses.Select(FormatCourseTitle);
     }
 
     public async Task<Course?> GetByIdAsync(int id)
     {
-        return await _courseRepository.GetByIdAsync(id);
+        var course = await _courseRepository.GetByIdAsync(id);
+        if (course == null) return null;
+        return FormatCourseTitle(course);
     }
 
     public async Task AddAsync(Course course)
