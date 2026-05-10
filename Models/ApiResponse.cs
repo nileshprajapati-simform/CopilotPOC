@@ -8,3 +8,5 @@ public class ApiResponse
 
     public IEnumerable<string> Errors { get; set; } = [];
 }
+
+public record ApiResponse<T>(string Message, T? Data);
