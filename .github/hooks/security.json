@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "sessionStart": {
+      "command": "echo \"[$(date)] Agent session started\" >> agent-logs.txt"
+    },
+    "preToolUse": {
+      "command": "echo \"[$(date)] Tool execution initiated: $TOOL_NAME\" >> agent-logs.txt"
+    }
+  }
+}
