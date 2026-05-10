@@ -3,8 +3,14 @@
     "sessionStart": {
       "command": "echo \"[$(date)] Agent session started\" >> agent-logs.txt"
     },
+    "sessionEnd": {
+      "command": "echo \"[$(date)] Agent session ended\" >> agent-logs.txt"
+    },
     "preToolUse": {
       "command": "echo \"[$(date)] Tool execution initiated: $TOOL_NAME\" >> agent-logs.txt"
+    },
+    "postToolUse": {
+      "command": "echo \"[$(date)] Tool execution completed: $TOOL_NAME with status: $TOOL_STATUS\" >> agent-logs.txt"
     }
   }
 }
