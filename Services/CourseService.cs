@@ -20,7 +20,7 @@ public class CourseService : ICourseService
         return courses.Select(FormatCourseTitle);
     }
 
-    public async Task<Course> GetByIdAsync(int id)
+    public async Task<Course?> GetByIdAsync(int id)
     {
         var course = await _courseRepository.GetByIdAsync(id);
         if (course == null) return null;
@@ -32,16 +32,13 @@ public class CourseService : ICourseService
         await _courseRepository.AddAsync(course);
     }
 
-    public async Task UpdateAsync(Course course)
+    public async Task<Course?> UpdateAsync(Course course)
     {
-        await _courseRepository.UpdateAsync(course);
+        return await _courseRepository.UpdateAsync(course);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        await _courseRepository.DeleteAsync(id);
+        return await _courseRepository.DeleteAsync(id);
     }
-
-    private static Course FormatCourseTitle(Course course) =>
-        new Course { Id = course.Id, Name = course.Name + TitleSuffix, Description = course.Description };
 }

@@ -5,8 +5,8 @@ namespace LMSWebAPI.Services;
 public interface ICourseService
 {
     Task<IEnumerable<Course>> GetAllAsync();
-    Task<Course> GetByIdAsync(int id);
+    Task<Course?> GetByIdAsync(int id);
     Task AddAsync(Course course);
-    Task UpdateAsync(Course course);
-    Task DeleteAsync(int id);
+    Task<Course?> UpdateAsync(Course course);
+    Task<bool> DeleteAsync(int id);
 }
