@@ -41,4 +41,14 @@ public class CourseService : ICourseService
     {
         return await _courseRepository.DeleteAsync(id);
     }
+
+    private static Course FormatCourseTitle(Course course)
+    {
+        return new Course
+        {
+            Id = course.Id,
+            Name = course.Name + TitleSuffix,
+            Description = course.Description
+        };
+    }
 }
