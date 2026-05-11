@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "./scripts/code-review.sh",
+        "powershell": "bash ./scripts/code-review.sh",
+        "cwd": ".",
+        "timeoutSec": 300
+      }
+    ]
+  }
+}
