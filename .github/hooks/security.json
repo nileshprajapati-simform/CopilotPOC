@@ -1,29 +1,23 @@
-{
-  "hooks": {
-    "_comment_security_audit": "Session and tool execution lifecycle hooks for security auditing",
-    "_comment_security_audit_description": "Track when agent sessions start/end and log all tool invocations",
-    
-    "sessionStart": {
-      "command": "echo \"[$(date)] Agent session started\" >> agent-logs.txt"
-    },
-    "sessionEnd": {
-      "command": "echo \"[$(date)] Agent session ended\" >> agent-logs.txt"
-    },
-    "preToolUse": {
-      "command": "echo \"[$(date)] Tool execution initiated: $TOOL_NAME\" >> agent-logs.txt"
-    },
-    "postToolUse": {
-      "command": "echo \"[$(date)] Tool execution completed: $TOOL_NAME with status: $TOOL_STATUS\" >> agent-logs.txt"
-    },
-
-    "_comment_automation": "PR quality checks and automated code review hooks",
-    "_comment_automation_description": "Validate PRs with build/test and gather code review context automatically",
-    
-    "prValidation": {
-      "command": "echo \"[$(date)] PR validation started\" >> agent-logs.txt; dotnet build LMSWebAPI.sln >> agent-logs.txt 2>&1; dotnet test LMSWebAPI.sln >> agent-logs.txt 2>&1; echo \"[$(date)] PR validation completed\" >> agent-logs.txt"
-    },
-    "autoCodeReview": {
-      "command": "echo \"[$(date)] Auto code review started\" >> agent-logs.txt; gh pr diff --name-only >> agent-logs.txt 2>&1; gh pr view --json title,number,author,additions,deletions,changedFiles >> agent-logs.txt 2>&1; echo \"[$(date)] Auto code review completed\" >> agent-logs.txt"
-    }
-  }
-}
+// {
+//   "version": 1,
+//   "hooks": {
+//     "preToolUse": [
+//       {
+//         "type": "command",
+//         "bash": "./scripts/security-audit.sh pre",
+//         "powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\security-audit.ps1 -Phase pre",
+//         "cwd": ".",
+//         "timeoutSec": 30
+//       }
+//     ],
+//     "postToolUse": [
+//       {
+//         "type": "command",
+//         "bash": "./scripts/security-audit.sh post",
+//         "powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\security-audit.ps1 -Phase post",
+//         "cwd": ".",
+//         "timeoutSec": 30
+//       }
+//     ]
+//   }
+// }
