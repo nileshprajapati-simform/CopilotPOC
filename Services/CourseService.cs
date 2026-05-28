@@ -5,6 +5,8 @@ namespace LMSWebAPI.Services;
 
 public class CourseService : ICourseService
 {
+    private const string TitleSuffix = "...";
+
     private readonly ICourseRepository _courseRepository;
 
     public CourseService(ICourseRepository courseRepository)
