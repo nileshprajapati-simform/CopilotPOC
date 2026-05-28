@@ -92,6 +92,18 @@ public class CourseController : ControllerBase
         return Ok(new ApiResponse<Course>("Course retrieved successfully.", course));
     }
 
+   [HttpGet("{id}/details")]
+    public async Task<IActionResult> GetById2(int id)
+    {
+        var course = await _courseService.GetByIdAsync(id);
+        if (course == null)
+        {
+            return NotFound(new ApiResponse<Course>("Course not found.", null));
+        }
+
+        return Ok(new ApiResponse<Course>("Course retrieved successfully.", course));
+    }
+
     /// <summary>
     /// Creates a new course.
     /// </summary>
