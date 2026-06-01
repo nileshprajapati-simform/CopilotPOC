@@ -16,15 +16,12 @@ public class CourseService : ICourseService
 
     public async Task<IEnumerable<Course>> GetAllAsync()
     {
-        var courses = await _courseRepository.GetAllAsync();
-        return courses.Select(FormatCourseTitle);
+        return await _courseRepository.GetAllAsync();
     }
 
     public async Task<Course?> GetByIdAsync(int id)
     {
-        var course = await _courseRepository.GetByIdAsync(id);
-        if (course == null) return null;
-        return FormatCourseTitle(course);
+        return await _courseRepository.GetByIdAsync(id);
     }
 
     public async Task AddAsync(Course course)
@@ -40,5 +37,15 @@ public class CourseService : ICourseService
     public async Task<bool> DeleteAsync(int id)
     {
         return await _courseRepository.DeleteAsync(id);
+    }
+
+    private static Course FormatCourseTitle(Course course)
+    {
+        return new Course
+        {
+            Id = course.Id,
+            Name = course.Name + TitleSuffix,
+            Description = course.Description
+        };
     }
 }

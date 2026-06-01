@@ -1,10 +1,23 @@
-{
-  "hooks": {
-    "sessionStart": {
-      "command": "echo \"[$(date)] Agent session started\" >> agent-logs.txt"
-    },
-    "preToolUse": {
-      "command": "echo \"[$(date)] Tool execution initiated: $TOOL_NAME\" >> agent-logs.txt"
-    }
-  }
-}
+// {
+//   "version": 1,
+//   "hooks": {
+//     "preToolUse": [
+//       {
+//         "type": "command",
+//         "bash": "./scripts/security-audit.sh pre",
+//         "powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\security-audit.ps1 -Phase pre",
+//         "cwd": ".",
+//         "timeoutSec": 30
+//       }
+//     ],
+//     "postToolUse": [
+//       {
+//         "type": "command",
+//         "bash": "./scripts/security-audit.sh post",
+//         "powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\security-audit.ps1 -Phase post",
+//         "cwd": ".",
+//         "timeoutSec": 30
+//       }
+//     ]
+//   }
+// }

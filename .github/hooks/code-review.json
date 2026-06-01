@@ -1,0 +1,14 @@
+// {
+//   "version": 1,
+//   "hooks": {
+//     "postToolUse": [
+//       {
+//         "type": "command",
+//         "bash": "./scripts/code-review.sh",
+//         "powershell": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\code-review.ps1",
+//         "cwd": ".",
+//         "timeoutSec": 300
+//       }
+//     ]
+//   }
+// }
